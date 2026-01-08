@@ -7,6 +7,7 @@ interface AuthContextType {
     user: User | null;
     loading: boolean;
     signOut: () => Promise<void>;
+    signInWithMock: (email: string) => void;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -14,6 +15,7 @@ const AuthContext = createContext<AuthContextType>({
     user: null,
     loading: true,
     signOut: async () => {},
+    signInWithMock: () => {},
 });
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -22,30 +24,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Se não houver configuração do Supabase, inicia sessão de demonstração
-        // Isso previne o erro "Failed to fetch" ao tentar conectar na URL de placeholder
+        // Se não estiver configurado, apenas finaliza o carregamento.
+        // O estado session continuará null, forçando a tela de Auth a aparecer.
         if (!isConfigured) {
-            console.log('Supabase credentials missing. Starting in Demo Mode.');
-            const mockUser = {
-                id: 'demo-user',
-                email: 'demo@scriptgen.ai',
-                app_metadata: {},
-                user_metadata: {},
-                aud: 'authenticated',
-                created_at: new Date().toISOString(),
-                role: 'authenticated'
-            } as User;
-
-            const mockSession = {
-                access_token: 'mock-token',
-                token_type: 'bearer',
-                expires_in: 3600,
-                refresh_token: 'mock-refresh',
-                user: mockUser
-            } as Session;
-
-            setSession(mockSession);
-            setUser(mockUser);
+            console.log('Supabase credentials missing. Auth disabled.');
             setLoading(false);
             return;
         }
@@ -79,26 +61,44 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }, []);
 
     const signOut = async () => {
-        // Clear local state first to ensure immediate UI feedback
         setSession(null);
         setUser(null);
 
-        if (!isConfigured) {
-            // In demo mode, we just cleared the state, no need to reload page
-            return;
-        }
+        if (!isConfigured) return;
         
         try {
             const { error } = await supabase.auth.signOut();
             if (error) throw error;
         } catch (error) {
             console.error("Error signing out:", error);
-            // State is already cleared locally, so user is effectively signed out
         }
     };
 
+    const signInWithMock = (email: string) => {
+        const mockUser = {
+            id: 'demo-user',
+            email: email || 'demo@scriptgen.ai',
+            app_metadata: {},
+            user_metadata: {},
+            aud: 'authenticated',
+            created_at: new Date().toISOString(),
+            role: 'authenticated'
+        } as User;
+
+        const mockSession = {
+            access_token: 'mock-token',
+            token_type: 'bearer',
+            expires_in: 3600,
+            refresh_token: 'mock-refresh',
+            user: mockUser
+        } as Session;
+
+        setSession(mockSession);
+        setUser(mockUser);
+    };
+
     return (
-        <AuthContext.Provider value={{ session, user, loading, signOut }}>
+        <AuthContext.Provider value={{ session, user, loading, signOut, signInWithMock }}>
             {children}
         </AuthContext.Provider>
     );

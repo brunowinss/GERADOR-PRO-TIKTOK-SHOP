@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { supabase, isConfigured } from '../lib/supabaseClient';
 import { useToast } from './ui/Toast';
 import { Zap, Loader2, Mail, Lock } from './Icons';
+import { useAuth } from '../context/AuthContext';
 
 export const Auth: React.FC = () => {
     const [loading, setLoading] = useState(false);
@@ -9,26 +10,18 @@ export const Auth: React.FC = () => {
     const [password, setPassword] = useState('');
     const [isSignUp, setIsSignUp] = useState(false);
     const { error, success } = useToast();
+    const { signInWithMock } = useAuth();
 
     const handleAuth = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
 
         try {
-            // Demo Mode Handling
+            // Se não estiver configurado, usa login simulado em vez de falhar
             if (!isConfigured) {
-                // Simulate network delay
-                await new Promise(resolve => setTimeout(resolve, 800));
-                
-                if (isSignUp) {
-                    success('Modo Demo: Conta criada com sucesso! (Simulado)');
-                }
-                
-                success('Modo Demo: Login realizado! Entrando...');
-                // Trigger reload to pick up the auto-login logic in AuthContext for unconfigured state
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1000);
+                await new Promise(resolve => setTimeout(resolve, 800)); // Simula delay de rede
+                signInWithMock(email);
+                success('Modo Demonstração: Login realizado (Simulado)');
                 return;
             }
 
@@ -52,7 +45,6 @@ export const Auth: React.FC = () => {
             }
         } catch (err: any) {
             console.error(err);
-            // Handle "Failed to fetch" specifically which usually means network error or bad URL
             if (err.message === 'Failed to fetch') {
                 error('Erro de conexão. Verifique sua internet ou a configuração do Supabase.');
             } else {
@@ -80,8 +72,10 @@ export const Auth: React.FC = () => {
                         Sua plataforma de geração de scripts virais para TikTok Shop.
                     </p>
                     {!isConfigured && (
-                        <div className="mt-2 inline-block px-3 py-1 bg-yellow-500/10 border border-yellow-500/20 rounded-full">
-                            <span className="text-xs text-yellow-500 font-medium">Modo Demonstração (Sem Backend)</span>
+                        <div className="mt-4 p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
+                            <p className="text-xs text-yellow-500 font-medium">
+                                ⚠️ Modo Demo: Login será simulado sem backend.
+                            </p>
                         </div>
                     )}
                 </div>
@@ -164,7 +158,7 @@ export const Auth: React.FC = () => {
 
                 {/* Footer Info */}
                 <p className="text-center text-[#444] text-xs mt-8">
-                    {!isConfigured ? 'Modo Demonstração (Simulado)' : 'Protegido por autenticação segura Supabase.'}
+                    Protegido por autenticação segura Supabase.
                 </p>
             </div>
             <style>{`
