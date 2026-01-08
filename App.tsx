@@ -6,7 +6,9 @@ import { BrandTab } from './components/BrandTab';
 import { Footer } from './components/Footer';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from './components/ui/Tabs';
 import { BRANDS } from './constants';
-import { Zap, Video, Sparkles, Music } from './components/Icons';
+import { Zap, Video, Sparkles, Music, Loader2 } from './components/Icons';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import { Auth } from './components/Auth';
 
 const BackgroundAmbience = () => (
     <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10">
@@ -26,7 +28,6 @@ const BackgroundAmbience = () => (
 );
 
 const TabSelector: React.FC<{ activeTab: string; onTabChange: (val: string) => void }> = ({ activeTab, onTabChange }) => {
-    // Helper to get icon component
     const getIcon = (iconName: string) => {
         switch(iconName) {
             case 'Video': return Video;
@@ -97,22 +98,42 @@ const TabSelector: React.FC<{ activeTab: string; onTabChange: (val: string) => v
     );
 };
 
-const App: React.FC = () => {
+const MainContent: React.FC = () => {
+    const { session, loading } = useAuth();
     const [activeTab, setActiveTab] = useState('bruno-shopp');
 
-    return (
-        <ToastProvider>
-            <div className="min-h-screen bg-[#0a0a0a] relative selection:bg-primary/30 selection:text-white font-body">
-                <BackgroundAmbience />
-                
-                <div className="relative z-10 container max-w-5xl mx-auto px-3 sm:px-4 py-4 sm:py-8">
-                    <Navbar />
-                    <HeroSection />
-                    <TabSelector activeTab={activeTab} onTabChange={setActiveTab} />
-                    <Footer />
-                </div>
+    if (loading) {
+        return (
+            <div className="h-screen flex items-center justify-center">
+                <Loader2 className="w-8 h-8 text-primary animate-spin" />
             </div>
-        </ToastProvider>
+        );
+    }
+
+    if (!session) {
+        return <Auth />;
+    }
+
+    return (
+        <div className="relative z-10 container max-w-5xl mx-auto px-3 sm:px-4 py-4 sm:py-8">
+            <Navbar />
+            <HeroSection />
+            <TabSelector activeTab={activeTab} onTabChange={setActiveTab} />
+            <Footer />
+        </div>
+    );
+};
+
+const App: React.FC = () => {
+    return (
+        <AuthProvider>
+            <ToastProvider>
+                <div className="min-h-screen bg-[#0a0a0a] relative selection:bg-primary/30 selection:text-white font-body">
+                    <BackgroundAmbience />
+                    <MainContent />
+                </div>
+            </ToastProvider>
+        </AuthProvider>
     );
 };
 

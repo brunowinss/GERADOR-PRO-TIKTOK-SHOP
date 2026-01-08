@@ -10,11 +10,18 @@ export default defineConfig(({ mode }) => {
   // We check for both API_KEY (standard) and key (user configuration)
   const apiKey = env.API_KEY || env.key;
 
+  // Use environment variables or empty strings. 
+  // Do NOT provide hardcoded dead credentials as defaults, as this causes "Failed to fetch" errors.
+  const supabaseUrl = env.SUPABASE_URL || '';
+  const supabaseAnonKey = env.SUPABASE_ANON_KEY || '';
+
   return {
     plugins: [react()],
     define: {
       // This ensures process.env.API_KEY works in the client-side code
-      'process.env.API_KEY': JSON.stringify(apiKey)
+      'process.env.API_KEY': JSON.stringify(apiKey || ''),
+      'process.env.SUPABASE_URL': JSON.stringify(supabaseUrl),
+      'process.env.SUPABASE_ANON_KEY': JSON.stringify(supabaseAnonKey)
     }
   };
 });
