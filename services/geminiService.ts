@@ -72,8 +72,10 @@ export const generateScript = async (
             ? getVeoPrompt(productTitle) 
             : getSoraPrompt(brandName, brandDisplay, productTitle);
 
-        // Remove the data:image/ type prefix if present for the API call
-        const cleanBase64 = base64Image.split(',')[1] || base64Image;
+        // Extract mimeType and clean base64 data
+        const mimeMatch = base64Image.match(/^data:(.*);base64,/);
+        const mimeType = mimeMatch ? mimeMatch[1] : 'image/jpeg';
+        const cleanBase64 = base64Image.replace(/^data:(.*);base64,/, '');
 
         const response = await ai.models.generateContent({
             model: 'gemini-3-flash-preview',
@@ -81,7 +83,7 @@ export const generateScript = async (
                 parts: [
                     {
                         inlineData: {
-                            mimeType: 'image/jpeg', // Assuming jpeg/png, API handles standard types well
+                            mimeType: mimeType,
                             data: cleanBase64
                         }
                     },
