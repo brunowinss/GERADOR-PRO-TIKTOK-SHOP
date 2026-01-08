@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScriptGen - TikTok Shop Prompts</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        border: "hsl(var(--border))",
+                        input: "hsl(var(--input))",
+                        ring: "hsl(var(--ring))",
+                        background: "hsl(var(--background))",
+                        foreground: "hsl(var(--foreground))",
+                        primary: {
+                            DEFAULT: "hsl(var(--primary))",
+                            foreground: "hsl(var(--primary-foreground))",
+                        },
+                        muted: {
+                            DEFAULT: "hsl(var(--muted))",
+                            foreground: "hsl(var(--muted-foreground))",
+                        },
+                        card: {
+                            DEFAULT: "hsl(var(--card))",
+                            foreground: "hsl(var(--card-foreground))",
+                        },
+                        destructive: {
+                            DEFAULT: "hsl(var(--destructive))",
+                            foreground: "hsl(var(--destructive-foreground))",
+                        },
+                    },
+                    borderRadius: {
+                        lg: "0.75rem",
+                        md: "calc(0.75rem - 2px)",
+                        sm: "calc(0.75rem - 4px)",
+                    },
+                    fontFamily: {
+                        display: ['Space Grotesk', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer base {
+            :root {
+                --background: 0 0% 0%;
+                --foreground: 0 0% 100%;
+                --card: 0 0% 4%;
+                --card-foreground: 0 0% 100%;
+                --primary: 145 100% 50%;
+                --primary-foreground: 0 0% 0%;
+                --muted: 0 0% 10%;
+                --muted-foreground: 0 0% 60%;
+                --destructive: 0 84% 60%;
+                --destructive-foreground: 0 0% 100%;
+                --border: 0 0% 12%;
+                --input: 0 0% 6%;
+                --ring: 145 100% 50%;
+            }
+        }
+        @layer base {
+            * {
+                @apply border-border;
+            }
+            body {
+                @apply bg-background text-foreground;
+                font-family: 'Inter', sans-serif;
+            }
+        }
+        pre::-webkit-scrollbar {
+            height: 6px;
+        }
+        pre::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        pre::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+        .animate-pulse-slow {
+            animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.34.0"
+  }
+}
+</script>
+</head>
+<body>
+    <div id="root"></div>
+</body>
+</html>

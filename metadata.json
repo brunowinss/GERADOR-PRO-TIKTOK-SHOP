@@ -1,0 +1,5 @@
+{
+  "name": "teste app",
+  "description": "AI-powered TikTok Shop prompt generator using Gemini to create optimized video scripts from product images.",
+  "requestFramePermissions": []
+}
