@@ -14,18 +14,34 @@ STRICT TIKTOK SHOP COMPLIANCE RULES (MANDATORY):
 `;
 
 const SORA_SYSTEM_PROMPT = `
-You are an expert copywriter for TikTok Shop video ads.
-Your task is to analyze product images and generate a short, high-conversion video script formatted specifically for a video generation AI called "Sora 2".
+You are a specialized script generator for AI video ads.
+Your goal is to generate a script following a STRICT format.
 
 ${COMPLIANCE_GUIDELINES}
 
-Output Format Requirements:
-1.  Visual Description Line: "[Presenter] usando camiseta preta com texto centralizado no meio do peito escrito [Brand Display]"
-2.  Series of "FALA:" lines which are the spoken audio by the presenter.
-3.  Ends with "IMPORTANT: No text overlays, no captions, no visual elements on screen. Only the presenter and the product."
+VISUAL DESCRIPTION RULES (CRITICAL):
+- You MUST NOT describe the background, environment, lighting, furniture, or setting.
+- You MUST NOT describe the presenter's age ("jovem"), emotion ("sorridente", "carismática"), or attractiveness.
+- The visual description line must ONLY contain the presenter type and the t-shirt description.
+- STRICT TEMPLATE: "[Presenter Type] usando camiseta preta com texto centralizado no meio do peito escrito [Brand Display]"
 
-The tone should be energetic, persuasive, and authentic to Brazilian Portuguese trends on TikTok.
-CRITICAL: Do NOT describe the background, environment, lighting, age, or emotions of the presenter. Keep the visual description strictly to the person and the black t-shirt text.
+BAD VISUAL EXAMPLE (NEVER DO THIS):
+"Apresentadora mulher jovem e carismática, sorridente, em um ambiente doméstico moderno e bem iluminado..."
+
+GOOD VISUAL EXAMPLE (DO THIS):
+"Apresentadora mulher usando camiseta preta com texto centralizado no meio do peito escrito Shop.Bruno"
+
+AUDIO RULES:
+- The "FALA" lines must form a continuous, natural, high-energy sales pitch.
+- Do not use disconnected sentences. It should read like one cohesive speech split into lines.
+
+OUTPUT FORMAT:
+1. Visual Line (Strict Template)
+2. FALA: [Speech Line 1]
+3. FALA: [Speech Line 2]
+...
+4. FALA: clica no carrinho laranja
+5. IMPORTANT: No text overlays, no captions, no visual elements on screen. Only the presenter and the product.
 `;
 
 const VEO_SYSTEM_PROMPT = `
@@ -34,41 +50,60 @@ Your task is to analyze product images and generate a structured UGC script form
 
 ${COMPLIANCE_GUIDELINES}
 
-Output Format Requirements:
-1.  Header: "ESTILO UGC (User Generated Content): [Description]"
-2.  PARTE 1 (0-8s) - GANCHO: [Scene description] and [Spoken text in PT-BR]
-3.  PARTE 2 (8-16s) - CONTEÚDO: [Scene description] and [Spoken text in PT-BR]
-4.  PARTE 3 (16-24s) - CTA: [Scene description] and [Spoken text in PT-BR]
-5.  Ends with "IMPORTANT: No text overlays..."
+LENGTH CONSTRAINTS (CRITICAL):
+- Each "FALA EM PT-BR" section must be SHORT, PUNCHY and FAST.
+- MAXIMUM 20 WORDS PER PART. Do not exceed 20 words per spoken section.
+- Be direct. Eliminate fluff.
 
-The spoken text must be in natural, conversational Brazilian Portuguese.
+Output Format Requirements (STRICTLY FOLLOW THIS STRUCTURE):
+
+ESTILO UGC (User Generated Content): [Short Strategy Description]
+
+PARTE 1 - GANCHO:
+CENA: [Visual description of the scene]
+FALA EM PT-BR: [Spoken text in natural Brazilian Portuguese - MAX 20 WORDS]
+
+PARTE 2 - CONTEÚDO:
+CENA: [Visual description of the scene]
+FALA EM PT-BR: [Spoken text in natural Brazilian Portuguese - MAX 20 WORDS]
+
+PARTE 3 - CTA:
+CENA: [Visual description of the scene]
+FALA EM PT-BR: [Spoken text in natural Brazilian Portuguese - MAX 20 WORDS]
+
+IMPORTANT: No text overlays, no captions, no visual elements on screen. Only the presenter and the product.
 `;
 
 const getSoraPrompt = (brandName: string, brandDisplay: string, productTitle: string) => {
-    // Logic updated to be strictly minimal: No "jovem", "carismática", "ambiente moderno", etc.
+    // Explicitly define the exact string to be used for the presenter to avoid any AI variation
     const presenterBase = brandName === "Bruno.wins"
         ? 'Apresentador homem e apresentadora mulher juntos'
         : (brandName === 'Shop.bruno' ? 'Apresentadora mulher' : 'Apresentador homem');
 
     return `
 Product Name: ${productTitle}
-Brand Name: ${brandName}
-Brand Display Text: ${brandDisplay}
+Brand Display: ${brandDisplay}
 
-Generate a 10s video script following this EXACT format:
+Generate a 10s video script.
 
-Line 1: ${presenterBase} usando camiseta preta com texto centralizado no meio do peito escrito "${brandDisplay}"
-Line 2: FALA: [Short punchy line 1]
-Line 3: FALA: [Short punchy line 2]
-Line 4: FALA: [Short punchy line 3]
-Line 5: FALA: [Short punchy line 4]
-Line 6: FALA: clica no carrinho laranja
-Line 7: IMPORTANT: No text overlays, no captions, no visual elements on screen. Only the presenter and the product.
+STRICT VISUAL INSTRUCTION:
+The first line MUST be exactly:
+"${presenterBase} usando camiseta preta com texto centralizado no meio do peito escrito "${brandDisplay}""
+(Do not add any other visual details, no background, no emotions).
 
-RULES:
-- Do NOT add adjectives like "jovem", "sorridente", "carismático".
-- Do NOT describe the background (e.g., no "ambiente doméstico", no "fundo neutro").
-- The visual description must be exactly as shown in Line 1.
+SCRIPT CONTENT:
+Generate 4-5 lines of continuous, punchy sales copy in Portuguese ending with "clica no carrinho laranja".
+
+REQUIRED OUTPUT FORMAT:
+${presenterBase} usando camiseta preta com texto centralizado no meio do peito escrito "${brandDisplay}"
+
+FALA: [Line 1]
+FALA: [Line 2]
+FALA: [Line 3]
+FALA: [Line 4]
+FALA: clica no carrinho laranja
+
+IMPORTANT: No text overlays, no captions, no visual elements on screen. Only the presenter and the product.
 `;
 };
 
@@ -76,10 +111,16 @@ const getVeoPrompt = (productTitle: string) => {
     return `
 Product Name: ${productTitle}
 
-Generate a 3-part UGC script (24s total).
-Part 1 (Hook): Surprise/Attention grabber.
-Part 2 (Content): Showing product details/benefits.
-Part 3 (CTA): Urgency to buy from the orange cart.
+Generate a high-converting 3-part UGC script (24s total).
+
+Structure:
+Part 1 (Hook): Grab attention immediately. (MAX 20 WORDS)
+Part 2 (Content): Explain why this product is amazing. (MAX 20 WORDS)
+Part 3 (CTA): Strong call to action for the "carrinho laranja". (MAX 20 WORDS)
+
+Ensure the output exactly matches the requested format with "PARTE X - [TITLE]:", "CENA:", and "FALA EM PT-BR:".
+Keep sentences short and dynamic.
+End with the IMPORTANT line.
 `;
 };
 
@@ -141,9 +182,13 @@ export const parseVeo3Script = (promptText: string): ParsedScript | null => {
     const parts: ScriptPart[] = [];
     let intro = '';
 
-    const parte1Index = promptText.indexOf('PARTE 1');
-    if (parte1Index > 0) {
-        intro = promptText.substring(0, parte1Index).trim();
+    // More robust intro extraction
+    const firstPartMatch = promptText.match(/PARTE 1/i);
+    if (firstPartMatch && firstPartMatch.index !== undefined && firstPartMatch.index > 0) {
+        intro = promptText.substring(0, firstPartMatch.index).trim();
+    } else if (!firstPartMatch) {
+        // Only valid if we can't find parts at all, return raw
+        return { intro: promptText, parts: [] };
     }
 
     const partConfigs = [
@@ -153,19 +198,37 @@ export const parseVeo3Script = (promptText: string): ParsedScript | null => {
     ];
 
     for (const config of partConfigs) {
-        // Regex to capture content between parts
-        const nextPart = config.partNum + 1;
-        const partRegex = new RegExp(`PARTE ${config.partNum}[^]*?${config.title}[:\\s]*([\\s\\S]*?)(?=PARTE ${nextPart}|IMPORTANT:|$)`, 'i');
+        // Regex logic:
+        // Find "PARTE X" ...
+        // Capture everything until the next "PARTE Y" OR "IMPORTANT:" OR End of string.
+        // We handle slight variations in separators ( - , :, space).
+        const nextPartNum = config.partNum + 1;
+        
+        // Flexible regex for the section header, e.g., "PARTE 1 - GANCHO" or "PARTE 1: GANCHO"
+        const sectionHeaderRegex = `PARTE ${config.partNum}[^\\n]*?${config.title}`;
+        
+        // Lookahead for next section or footer
+        const lookahead = `(?=PARTE ${nextPartNum}|IMPORTANT:|$)`;
+        
+        // Full regex with case insensitivity
+        const partRegex = new RegExp(`(${sectionHeaderRegex})([\\s\\S]*?)${lookahead}`, 'i');
+        
         const partMatch = promptText.match(partRegex);
         
-        if (partMatch && partMatch[1]) {
-            const partContent = partMatch[1];
+        if (partMatch && partMatch[2]) {
+            const rawContent = partMatch[2].trim();
             
-            const sceneMatch = partContent.match(/CENA:\s*([\s\S]*?)(?=FALA EM PT-BR:|$)/i);
+            // Extract Scene
+            const sceneMatch = rawContent.match(/CENA:\s*([\s\S]*?)(?=FALA EM PT-BR:|$)/i);
             const scene = sceneMatch ? sceneMatch[1].trim() : '';
             
-            const speechMatch = partContent.match(/FALA EM PT-BR:\s*([\s\S]*?)$/i);
-            const speech = speechMatch ? speechMatch[1].trim().replace(/\n.*IMPORTANT.*/gi, '').trim() : '';
+            // Extract Speech
+            // Remove "IMPORTANT: ..." if it got caught in the speech group (unlikely with lookahead but safe to do)
+            const speechMatch = rawContent.match(/FALA EM PT-BR:\s*([\s\S]*?)$/i);
+            let speech = speechMatch ? speechMatch[1].trim() : '';
+            
+            // Cleanup speech if it captured trailing text
+            speech = speech.replace(/\n*IMPORTANT:.*$/i, '').trim();
             
             parts.push({
                 title: config.title,
@@ -174,12 +237,6 @@ export const parseVeo3Script = (promptText: string): ParsedScript | null => {
                 speech,
             });
         }
-    }
-
-    // Fallback if regex fails (simple split)
-    if (parts.length === 0 && promptText.includes('PARTE 1')) {
-         // Basic parsing logic if rigorous regex fails
-         return { intro: promptText, parts: [] };
     }
 
     return { intro, parts };
