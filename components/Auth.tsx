@@ -44,9 +44,15 @@ export const Auth: React.FC = () => {
                 if (signInError) throw signInError;
             }
         } catch (err: any) {
-            console.error(err);
+            console.error("Auth error:", err);
+            
+            // Tratamento de erros comuns do Supabase
             if (err.message === 'Failed to fetch') {
-                error('Erro de conexão. Verifique sua internet ou a configuração do Supabase.');
+                error('Erro de conexão com Supabase. Verifique a URL do projeto.');
+            } else if (err.message?.includes('JWT') || err.status === 401 || err.code === '401') {
+                error('Chave do Supabase inválida. Verifique se a KEY está correta (Anon Key).');
+            } else if (err.message?.includes('apikey')) {
+                error('Configuração de API Key inválida.');
             } else {
                 error(err.message || 'Erro na autenticação');
             }

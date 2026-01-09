@@ -3,9 +3,21 @@ import { ParsedScript, ScriptPart } from "../types";
 
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
+const COMPLIANCE_GUIDELINES = `
+STRICT TIKTOK SHOP COMPLIANCE RULES (MANDATORY):
+1. NO FALSE SCARCITY: Do not claim "Limited time only", "Last chance", or "Ending soon" to pressure an immediate decision unless strictly true. Do not deprive the buyer of sufficient time to make a conscious choice.
+2. NO "FREE" MISLEADING CLAIMS: Do not describe products as "Free" (Grátis), "No Cost" (Sem custo), or similar if the buyer has to pay shipping or any other fee.
+3. NO MEDICAL CURES: Do not claim the product cures diseases, dysfunctions, or malformations without objective, verifiable evidence. Avoid definitive medical claims for supplements/wellness products.
+4. NO FAKE RIGHTS AS BONUSES: Do not present standard legal rights (e.g., "7-day refund guarantee") as a unique offer differentiator or a special bonus.
+5. NO FAKE ENDORSEMENTS: Do not claim endorsements, trust seals, or quality marks that do not exist.
+6. HONESTY: Do not mislead about product functions or claim compliance with laws if not true.
+`;
+
 const SORA_SYSTEM_PROMPT = `
 You are an expert copywriter for TikTok Shop video ads.
 Your task is to analyze product images and generate a short, high-conversion video script formatted specifically for a video generation AI called "Sora 2".
+
+${COMPLIANCE_GUIDELINES}
 
 Output Format Requirements:
 1.  Presenter description line.
@@ -19,6 +31,8 @@ The tone should be energetic, persuasive, and authentic to Brazilian Portuguese 
 const VEO_SYSTEM_PROMPT = `
 You are an expert UGC (User Generated Content) creator scriptwriter for TikTok Shop.
 Your task is to analyze product images and generate a structured UGC script formatted specifically for "Veo 3".
+
+${COMPLIANCE_GUIDELINES}
 
 Output Format Requirements:
 1.  Header: "ESTILO UGC (User Generated Content): [Description]"
