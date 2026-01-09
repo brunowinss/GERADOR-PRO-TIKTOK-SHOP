@@ -20,12 +20,12 @@ Your task is to analyze product images and generate a short, high-conversion vid
 ${COMPLIANCE_GUIDELINES}
 
 Output Format Requirements:
-1.  Presenter description line.
-2.  Text on chest line: "... com texto centralizado no meio do peito escrito [Brand Display]"
-3.  Series of "FALA:" lines which are the spoken audio by the presenter.
-4.  Ends with "IMPORTANT: No text overlays..."
+1.  Visual Description Line: "[Presenter] usando camiseta preta com texto centralizado no meio do peito escrito [Brand Display]"
+2.  Series of "FALA:" lines which are the spoken audio by the presenter.
+3.  Ends with "IMPORTANT: No text overlays, no captions, no visual elements on screen. Only the presenter and the product."
 
 The tone should be energetic, persuasive, and authentic to Brazilian Portuguese trends on TikTok.
+CRITICAL: Do NOT describe the background, environment, lighting, age, or emotions of the presenter. Keep the visual description strictly to the person and the black t-shirt text.
 `;
 
 const VEO_SYSTEM_PROMPT = `
@@ -45,20 +45,30 @@ The spoken text must be in natural, conversational Brazilian Portuguese.
 `;
 
 const getSoraPrompt = (brandName: string, brandDisplay: string, productTitle: string) => {
-    const presenter = brandName === "Bruno.wins"
+    // Logic updated to be strictly minimal: No "jovem", "carismática", "ambiente moderno", etc.
+    const presenterBase = brandName === "Bruno.wins"
         ? 'Apresentador homem e apresentadora mulher juntos'
-        : (brandName === 'Shop.bruno' ? 'Apresentadora mulher jovem e carismática' : 'Apresentador usando camiseta preta');
+        : (brandName === 'Shop.bruno' ? 'Apresentadora mulher' : 'Apresentador homem');
 
     return `
 Product Name: ${productTitle}
 Brand Name: ${brandName}
 Brand Display Text: ${brandDisplay}
 
-Generate a 10s video script.
-1. Presenter: ${presenter}.
-2. The presenter must have the text "${brandDisplay}" centered on their chest.
-3. Include 4-5 short, punchy spoken lines (FALA) in Portuguese (PT-BR).
-4. The last line must be a CTA like "clica no carrinho laranja".
+Generate a 10s video script following this EXACT format:
+
+Line 1: ${presenterBase} usando camiseta preta com texto centralizado no meio do peito escrito "${brandDisplay}"
+Line 2: FALA: [Short punchy line 1]
+Line 3: FALA: [Short punchy line 2]
+Line 4: FALA: [Short punchy line 3]
+Line 5: FALA: [Short punchy line 4]
+Line 6: FALA: clica no carrinho laranja
+Line 7: IMPORTANT: No text overlays, no captions, no visual elements on screen. Only the presenter and the product.
+
+RULES:
+- Do NOT add adjectives like "jovem", "sorridente", "carismático".
+- Do NOT describe the background (e.g., no "ambiente doméstico", no "fundo neutro").
+- The visual description must be exactly as shown in Line 1.
 `;
 };
 
