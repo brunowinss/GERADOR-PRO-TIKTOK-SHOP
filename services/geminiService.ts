@@ -33,6 +33,8 @@ GOOD VISUAL EXAMPLE (DO THIS):
 
 AUDIO RULES:
 - The "FALA" lines must form a continuous, natural, high-energy sales pitch.
+- TOTAL SPEECH LENGTH STRICT LIMIT: MAXIMUM 40 WORDS TOTAL (Sum of all lines).
+- The video is only 10 seconds long. The speech must be extremely concise and direct.
 - Do not use disconnected sentences. It should read like one cohesive speech split into lines.
 
 OUTPUT FORMAT:
@@ -99,7 +101,10 @@ The first line MUST be exactly:
 (Do not add any other visual details, no background, no emotions).
 
 SCRIPT CONTENT:
-Generate 4-5 lines of continuous, punchy sales copy in Portuguese ending with "clica no carrinho laranja".
+Generate a short, punchy sales pitch in Portuguese.
+CRITICAL: The total word count of all "FALA" lines combined MUST NOT EXCEED 40 WORDS.
+The video is short (10s). Be direct.
+End with "clica no carrinho laranja".
 
 REQUIRED OUTPUT FORMAT (Ensure the IMPORTANT line is included at the end):
 ${presenterBase} usando camiseta preta com texto centralizado no meio do peito escrito "${brandDisplay}"
