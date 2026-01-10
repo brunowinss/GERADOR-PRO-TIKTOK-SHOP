@@ -94,7 +94,7 @@ The first line MUST be exactly:
 SCRIPT CONTENT:
 Generate 4-5 lines of continuous, punchy sales copy in Portuguese ending with "clica no carrinho laranja".
 
-REQUIRED OUTPUT FORMAT:
+REQUIRED OUTPUT FORMAT (Ensure the IMPORTANT line is included at the end):
 ${presenterBase} usando camiseta preta com texto centralizado no meio do peito escrito "${brandDisplay}"
 
 FALA: [Line 1]

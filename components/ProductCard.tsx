@@ -134,9 +134,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ image, prompt, isGener
                         )}
 
                         {prompt && !isVeo3 && (
-                            <p className="text-sm text-muted-foreground mt-2 line-clamp-2 font-mono">
-                                "{prompt.substring(0, 100)}..."
-                            </p>
+                            <>
+                                <p className="text-sm text-muted-foreground mt-2 line-clamp-2 font-mono">
+                                    "{prompt.substring(0, 100)}..."
+                                </p>
+                                <div className="mt-2 p-1.5 bg-red-500/10 border border-red-500/20 rounded text-[10px] text-red-400 font-medium font-mono">
+                                    IMPORTANT: No text overlays, no captions, no visual elements on screen. Only the presenter and the product.
+                                </div>
+                            </>
                         )}
                     </div>
                 </div>
