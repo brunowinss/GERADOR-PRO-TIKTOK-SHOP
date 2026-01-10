@@ -76,9 +76,16 @@ IMPORTANT: No text overlays, no captions, no visual elements on screen. Only the
 
 const getSoraPrompt = (brandName: string, brandDisplay: string, productTitle: string) => {
     // Explicitly define the exact string to be used for the presenter to avoid any AI variation
-    const presenterBase = brandName === "Bruno.wins"
-        ? 'Apresentador homem e apresentadora mulher juntos'
-        : (brandName === 'Shop.bruno' ? 'Apresentadora mulher' : 'Apresentador homem');
+    let presenterBase = 'Apresentador homem';
+
+    if (brandName === "Bruno.wins") {
+        presenterBase = 'Apresentador homem e apresentadora mulher juntos';
+    } else if (brandName === 'Shop.bruno') {
+        presenterBase = 'Apresentadora mulher';
+    } else if (brandName === 'Bruno.shopp') {
+        // Randomly select between Male and Female for Bruno.shopp to ensure variety
+        presenterBase = Math.random() < 0.5 ? 'Apresentador homem' : 'Apresentadora mulher';
+    }
 
     return `
 Product Name: ${productTitle}
