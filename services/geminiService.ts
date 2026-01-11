@@ -79,9 +79,11 @@ IMPORTANT: No text overlays, no captions, no visual elements on screen. Only the
 const getSoraPrompt = (brandName: string, brandDisplay: string, productTitle: string) => {
     // Explicitly define the exact string to be used for the presenter to avoid any AI variation
     let presenterBase = 'Apresentador homem';
+    let finalBrandDisplay = brandDisplay;
 
     if (brandName === "Bruno.wins") {
         presenterBase = 'Apresentador homem e apresentadora mulher juntos';
+        finalBrandDisplay = 'wins.creator'; // Override display text for this specific brand strategy
     } else if (brandName === 'Shop.bruno') {
         presenterBase = 'Apresentadora mulher';
     } else if (brandName === 'Bruno.shopp') {
@@ -91,13 +93,13 @@ const getSoraPrompt = (brandName: string, brandDisplay: string, productTitle: st
 
     return `
 Product Name: ${productTitle}
-Brand Display: ${brandDisplay}
+Brand Display: ${finalBrandDisplay}
 
 Generate a 10s video script.
 
 STRICT VISUAL INSTRUCTION:
 The first line MUST be exactly:
-"${presenterBase} usando camiseta preta com texto centralizado no meio do peito escrito "${brandDisplay}""
+"${presenterBase} usando camiseta preta com texto centralizado no meio do peito escrito "${finalBrandDisplay}""
 (Do not add any other visual details, no background, no emotions).
 
 SCRIPT CONTENT:
@@ -107,7 +109,7 @@ The video is short (10s). Be direct.
 End with "clica no carrinho laranja".
 
 REQUIRED OUTPUT FORMAT (Ensure the IMPORTANT line is included at the end):
-${presenterBase} usando camiseta preta com texto centralizado no meio do peito escrito "${brandDisplay}"
+${presenterBase} usando camiseta preta com texto centralizado no meio do peito escrito "${finalBrandDisplay}"
 
 FALA: [Line 1]
 FALA: [Line 2]
