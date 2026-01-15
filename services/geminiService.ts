@@ -77,29 +77,30 @@ IMPORTANT: No text overlays, no captions, no visual elements on screen. Only the
 `;
 
 const getSoraPrompt = (brandName: string, brandDisplay: string, productTitle: string) => {
-    // Explicitly define the exact string to be used for the presenter to avoid any AI variation
+    // Define base presenter and t-shirt text
     let presenterBase = 'Apresentador homem';
-    let finalBrandDisplay = brandDisplay;
+    let tShirtText = brandDisplay;
 
+    // Specific logic per brand
     if (brandName === "Bruno.wins") {
         presenterBase = 'Apresentador homem e apresentadora mulher juntos';
-        finalBrandDisplay = 'wins.creator'; // Override display text for this specific brand strategy
+        tShirtText = 'wins.creator'; // Force 'wins.creator' for this specific brand
     } else if (brandName === 'Shop.bruno') {
         presenterBase = 'Apresentadora mulher';
     } else if (brandName === 'Bruno.shopp') {
-        // Randomly select between Male and Female for Bruno.shopp to ensure variety
+        // Randomly select between Male and Female for Bruno.shopp variety
         presenterBase = Math.random() < 0.5 ? 'Apresentador homem' : 'Apresentadora mulher';
     }
 
     return `
 Product Name: ${productTitle}
-Brand Display: ${finalBrandDisplay}
+Brand Display: ${brandDisplay}
 
 Generate a 10s video script.
 
 STRICT VISUAL INSTRUCTION:
 The first line MUST be exactly:
-"${presenterBase} usando camiseta preta com texto centralizado no meio do peito escrito "${finalBrandDisplay}""
+"${presenterBase} usando camiseta preta com texto centralizado no meio do peito escrito "${tShirtText}""
 (Do not add any other visual details, no background, no emotions).
 
 SCRIPT CONTENT:
@@ -109,7 +110,7 @@ The video is short (10s). Be direct.
 End with "clica no carrinho laranja".
 
 REQUIRED OUTPUT FORMAT (Ensure the IMPORTANT line is included at the end):
-${presenterBase} usando camiseta preta com texto centralizado no meio do peito escrito "${finalBrandDisplay}"
+${presenterBase} usando camiseta preta com texto centralizado no meio do peito escrito "${tShirtText}"
 
 FALA: [Line 1]
 FALA: [Line 2]
@@ -173,7 +174,7 @@ export const generateScript = async (
             },
             config: {
                 systemInstruction: systemInstruction,
-                temperature: 0.7, // Creativity balanced with format adherence
+                temperature: 0.7,
             }
         });
 
@@ -196,12 +197,11 @@ export const parseVeo3Script = (promptText: string): ParsedScript | null => {
     const parts: ScriptPart[] = [];
     let intro = '';
 
-    // More robust intro extraction
+    // Robust intro extraction
     const firstPartMatch = promptText.match(/PARTE 1/i);
     if (firstPartMatch && firstPartMatch.index !== undefined && firstPartMatch.index > 0) {
         intro = promptText.substring(0, firstPartMatch.index).trim();
     } else if (!firstPartMatch) {
-        // Only valid if we can't find parts at all, return raw
         return { intro: promptText, parts: [] };
     }
 
@@ -212,36 +212,20 @@ export const parseVeo3Script = (promptText: string): ParsedScript | null => {
     ];
 
     for (const config of partConfigs) {
-        // Regex logic:
-        // Find "PARTE X" ...
-        // Capture everything until the next "PARTE Y" OR "IMPORTANT:" OR End of string.
-        // We handle slight variations in separators ( - , :, space).
         const nextPartNum = config.partNum + 1;
-        
-        // Flexible regex for the section header, e.g., "PARTE 1 - GANCHO" or "PARTE 1: GANCHO"
         const sectionHeaderRegex = `PARTE ${config.partNum}[^\\n]*?${config.title}`;
-        
-        // Lookahead for next section or footer
         const lookahead = `(?=PARTE ${nextPartNum}|IMPORTANT:|$)`;
-        
-        // Full regex with case insensitivity
         const partRegex = new RegExp(`(${sectionHeaderRegex})([\\s\\S]*?)${lookahead}`, 'i');
         
         const partMatch = promptText.match(partRegex);
         
         if (partMatch && partMatch[2]) {
             const rawContent = partMatch[2].trim();
-            
-            // Extract Scene
             const sceneMatch = rawContent.match(/CENA:\s*([\s\S]*?)(?=FALA EM PT-BR:|$)/i);
             const scene = sceneMatch ? sceneMatch[1].trim() : '';
             
-            // Extract Speech
-            // Remove "IMPORTANT: ..." if it got caught in the speech group (unlikely with lookahead but safe to do)
             const speechMatch = rawContent.match(/FALA EM PT-BR:\s*([\s\S]*?)$/i);
             let speech = speechMatch ? speechMatch[1].trim() : '';
-            
-            // Cleanup speech if it captured trailing text
             speech = speech.replace(/\n*IMPORTANT:.*$/i, '').trim();
             
             parts.push({
