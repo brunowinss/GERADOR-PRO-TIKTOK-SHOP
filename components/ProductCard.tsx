@@ -32,14 +32,19 @@ export const ProductCard: React.FC<ProductCardProps> = ({ image, prompt, isGener
 
     const handleCopy = async (e: React.MouseEvent) => {
         e.stopPropagation();
-        if (!prompt) return;
+        if (!prompt) {
+            console.warn("Attempted to copy, but prompt is null or empty.");
+            return;
+        }
         try {
+            console.log("Attempting to copy full prompt:", prompt);
             await navigator.clipboard.writeText(prompt);
             setCopied(true);
             success('Prompt completo copiado!');
             setTimeout(() => setCopied(false), 2000);
-        } catch (err) {
-            error('Erro ao copiar');
+        } catch (err: any) {
+            console.error("Error copying full prompt:", err);
+            error(`Erro ao copiar: ${err.name || ''} ${err.message || ''}`.trim());
         }
     };
 
@@ -53,25 +58,32 @@ export const ProductCard: React.FC<ProductCardProps> = ({ image, prompt, isGener
         }
 
         try {
+            console.log(`Attempting to copy part ${index + 1}:`, fullPart);
             await navigator.clipboard.writeText(fullPart);
             setCopiedPart(index);
             success('Parte copiada!');
             setTimeout(() => setCopiedPart(null), 2000);
-        } catch (err) {
-            error('Erro ao copiar');
+        } catch (err: any) {
+            console.error(`Error copying script part ${index + 1}:`, err);
+            error(`Erro ao copiar parte: ${err.name || ''} ${err.message || ''}`.trim());
         }
     };
 
     const handleCopyIntro = async (e: React.MouseEvent) => {
         e.stopPropagation();
-        if (!parsedScript?.intro) return;
+        if (!parsedScript?.intro) {
+            console.warn("Attempted to copy intro, but intro is null or empty.");
+            return;
+        }
         try {
+            console.log("Attempting to copy intro:", parsedScript.intro);
             await navigator.clipboard.writeText(parsedScript.intro);
             setCopiedIntro(true);
             success('Introdução copiada!');
             setTimeout(() => setCopiedIntro(false), 2000);
-        } catch (err) {
-            error('Erro ao copiar');
+        } catch (err: any) {
+            console.error("Error copying script intro:", err);
+            error(`Erro ao copiar introdução: ${err.name || ''} ${err.message || ''}`.trim());
         }
     };
 
@@ -97,7 +109,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ image, prompt, isGener
                             <div className="flex items-center gap-1 flex-shrink-0">
                                 <button
                                     onClick={handleCopy}
-                                    disabled={!prompt}
+                                    disabled={!prompt || isGenerating}
                                     className={`
                                         p-2 rounded-lg transition-all duration-200
                                         ${copied ? "text-primary bg-primary/20" : "text-muted-foreground hover:text-foreground hover:bg-muted/50"}
