@@ -52,8 +52,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ image, prompt, isGener
         e.stopPropagation();
         let fullPart = `CENA: ${part.scene}\n\nFALA EM PT-BR: ${part.speech}`;
         
-        // Append warning to the last part (Part 3) for Veo3
-        if (isVeo3 && parsedScript && index === parsedScript.parts.length - 1) {
+        // Append warning to ALL parts for Veo3
+        if (isVeo3) {
             fullPart += "\n\nIMPORTANT: No text overlays, no captions, no visual elements on screen. Only the presenter and the product.";
         }
 
@@ -238,7 +238,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ image, prompt, isGener
                                     <p className="text-sm text-foreground/90 mt-1 leading-relaxed">{part.speech}</p>
                                 </div>
 
-                                {isVeo3 && index === parsedScript.parts.length - 1 && (
+                                {isVeo3 && (
                                     <div className="mt-3 p-2 bg-red-500/10 border border-red-500/20 rounded text-[10px] text-red-400 font-medium font-mono">
                                         IMPORTANT: No text overlays, no captions, no visual elements on screen. Only the presenter and the product.
                                     </div>

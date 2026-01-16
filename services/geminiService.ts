@@ -55,7 +55,7 @@ ${COMPLIANCE_GUIDELINES}
 COPYWRITING STRATEGY (CRITICAL):
 - USE PRICE ANCHORING: Compare the product value to physical stores. Example: "In physical stores this costs X, but here it's Y".
 - TONE: Informal, viral, enthusiastic ("Sério, isso é a chave", "Você não vai acreditar", "Esquece tudo").
-- BE CREATIVE: Do not use robotic language. Write exactly how a Brazilian influencer speaks.
+- SPEECH FLOW: The "FALA EM PT-BR" must be a CONTINUOUS paragraph. NO pauses, NO line breaks within a speech section. It must flow like one fast breath.
 
 LENGTH CONSTRAINTS:
 - Each "FALA EM PT-BR" section must be PUNCHY. MAX 25 WORDS per part.
@@ -66,15 +66,15 @@ ESTILO UGC: [Short Strategy Description]
 
 PARTE 1 - GANCHO:
 CENA: [Visual description of the scene - Creative & Eye Catching]
-FALA EM PT-BR: [Hook the viewer instantly. Use curiosity or shock.]
+FALA EM PT-BR: [Continuous text. Hook the viewer instantly using curiosity or shock. No line breaks.]
 
 PARTE 2 - VALOR:
 CENA: [Visual description of the scene - Product in action/Close up]
-FALA EM PT-BR: [The "Selling Logic". Compare prices, show hidden benefits. E.g., "Normalmente custa 100 reais no shopping, mas aqui no TikTok Shop tá saindo por menos de 50!"]
+FALA EM PT-BR: [Continuous text. The "Selling Logic". Compare prices: "Normalmente custa X na loja, mas aqui tá Y". No line breaks.]
 
 PARTE 3 - CTA:
 CENA: [Visual description of the scene - Product clear view]
-FALA EM PT-BR: [Strong urgency. Drive to the orange cart.]
+FALA EM PT-BR: [Continuous text. Strong urgency. Drive to the orange cart. No line breaks.]
 
 IMPORTANT: No text overlays, no captions, no visual elements on screen. Only the presenter and the product.
 `;
@@ -138,7 +138,7 @@ Part 2 (Value/Comparison): The "Logic". Use the "Physical Store vs TikTok Shop" 
 Part 3 (Call to Action): Close the deal. Direct them to the Orange Cart immediately.
 
 Ensure the output exactly matches the requested format with "PARTE X - [TITLE]:", "CENA:", and "FALA EM PT-BR:".
-End with the IMPORTANT line.
+The "FALA" in each part must be a single, continuous sentence/paragraph without line breaks.
 `;
 };
 
@@ -231,6 +231,8 @@ export const parseVeo3Script = (promptText: string): ParsedScript | null => {
             const speechMatch = rawContent.match(/FALA EM PT-BR:\s*([\s\S]*?)$/i);
             let speech = speechMatch ? speechMatch[1].trim() : '';
             speech = speech.replace(/\n*IMPORTANT:.*$/i, '').trim();
+            // Clean up any stray newlines within speech to ensure continuity
+            speech = speech.replace(/\s+/g, ' ');
             
             parts.push({
                 title: config.title,
