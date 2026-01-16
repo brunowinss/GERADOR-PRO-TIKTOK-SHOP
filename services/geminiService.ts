@@ -57,17 +57,17 @@ LENGTH CONSTRAINTS (CRITICAL):
 - MAXIMUM 20 WORDS PER PART. Do not exceed 20 words per spoken section.
 - Be direct. Eliminate fluff.
 
-Output Format Requirements (STRICTLY FOLLOW THIS STRUCTURE):
+Output Format Requirements (STRICTLY FOLLOW THIS STRUCTURE AND TITLES):
 
-ESTILO UGC (User Generated Content): [Short Strategy Description]
+ESTILO UGC (User Generated Content): [Short Strategy Description, e.g., "Review direto e rápido"]
 
 PARTE 1 - GANCHO:
 CENA: [Visual description of the scene]
-FALA EM PT-BR: [Spoken text in natural Brazilian Portuguese - MAX 20 WORDS]
+FALA EM PT-BR: [Spoken text in natural Brazilian Portuguese - MAX 20 WORDS, focused on grabbing attention and highlighting a problem/desire]
 
 PARTE 2 - CTA:
 CENA: [Visual description of the scene]
-FALA EM PT-BR: [Spoken text in natural Brazilian Portuguese - MAX 20 WORDS]
+FALA EM PT-BR: [Spoken text in natural Brazilian Portuguese - MAX 20 WORDS, focused on a clear, urgent call to action to buy from the orange cart]
 
 IMPORTANT: No text overlays, no captions, no visual elements on screen. Only the presenter and the product.
 `;
@@ -122,14 +122,15 @@ const getVeoPrompt = (productTitle: string) => {
     return `
 Product Name: ${productTitle}
 
-Generate a high-converting 2-part UGC script (16s total).
+Generate a high-converting 2-part UGC script (16s total) for a TikTok Shop ad.
+Focus on compelling, sales-driven copy for each part.
 
 Structure:
-Part 1 (Hook): Grab attention immediately. (MAX 20 WORDS)
-Part 2 (Call to Action): Strong call to action for the "carrinho laranja". (MAX 20 WORDS)
+Part 1 (Hook): Create an immediate, strong hook that grabs attention and highlights a key benefit or solves a pain point related to "${productTitle}". (MAX 20 WORDS)
+Part 2 (Call to Action): Deliver a powerful, urgent call to action, driving the viewer to click the "carrinho laranja" (orange cart) for "${productTitle}". (MAX 20 WORDS)
 
 Ensure the output exactly matches the requested format with "PARTE X - [TITLE]:", "CENA:", and "FALA EM PT-BR:".
-Keep sentences short and dynamic.
+Keep sentences short, dynamic, and persuasive.
 End with the IMPORTANT line.
 `;
 };
@@ -169,7 +170,7 @@ export const generateScript = async (
             },
             config: {
                 systemInstruction: systemInstruction,
-                temperature: 0.7,
+                temperature: 0.7, // Creativity balanced with format adherence
             }
         });
 
@@ -202,13 +203,13 @@ export const parseVeo3Script = (promptText: string): ParsedScript | null => {
 
     const partConfigs = [
         { title: 'GANCHO', timing: '0-8s', partNum: 1 },
-        { title: 'CTA', timing: '8-16s', partNum: 2 }, // Updated title and timing for 2-part structure
+        { title: 'CTA', timing: '8-16s', partNum: 2 },
     ];
 
     for (const config of partConfigs) {
         const nextPartNum = config.partNum + 1;
-        // Adjusted regex to match the new titles for the 2-part structure
-        const sectionHeaderRegex = `PARTE ${config.partNum}[^\\n]*?(${config.title}|${config.partNum === 2 ? 'CALL TO ACTION' : ''})`; // Added 'CALL TO ACTION' for robustness
+        // Strict regex for "PARTE X - TITLE" as enforced in the prompt
+        const sectionHeaderRegex = `PARTE ${config.partNum}\\s*-\\s*${config.title}`;
         const lookahead = `(?=PARTE ${nextPartNum}|IMPORTANT:|$)`;
         const partRegex = new RegExp(`(${sectionHeaderRegex})([\\s\\S]*?)${lookahead}`, 'i');
         
