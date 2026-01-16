@@ -37,8 +37,8 @@ export const BRANDS: Brand[] = [
         display: 'Wins.shop', 
         icon: 'Music', 
         model: 'Veo3', 
-        duration: '16s', // Atualizado para 2 partes (8s por parte)
-        hook: '🎵 Modelo Veo3 - Alta conversão e direta!',
-        description: 'Formato de 16 segundos com 2 partes para máxima retenção e CTA direto. Perfeito para produtos de impulso e promoções rápidas.'
+        duration: '24s', // Updated to 24s (3 parts)
+        hook: '🎵 Copy Viral + Estrutura de 3 Cenas',
+        description: 'Script de 24s focado em ANCORAGEM DE PREÇO. Gancho visual, Comparação de valor (Loja Física vs TikTok) e CTA agressivo.'
     },
 ];

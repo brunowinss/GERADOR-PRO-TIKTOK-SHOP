@@ -32,7 +32,7 @@ export const HeroSection: React.FC = () => (
             </div>
             <div className="h-6 sm:h-8 w-px bg-[#222]" />
             <div className="text-center">
-                <div className="text-xl sm:text-3xl font-bold text-[#f5d742]">16s</div> {/* Updated from 8s to 16s */}
+                <div className="text-xl sm:text-3xl font-bold text-[#f5d742]">24s</div> {/* Updated to 24s */}
                 <div className="text-xs sm:text-sm text-[#666] mt-1">Vídeo Veo3</div>
             </div>
             <div className="h-6 sm:h-8 w-px bg-[#222]" />

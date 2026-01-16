@@ -48,26 +48,33 @@ OUTPUT FORMAT:
 
 const VEO_SYSTEM_PROMPT = `
 You are an expert UGC (User Generated Content) creator scriptwriter for TikTok Shop.
-Your task is to analyze product images and generate a structured UGC script formatted specifically for "Veo 3".
+Your task is to analyze product images and generate a structured 3-PART UGC script formatted specifically for "Veo 3".
 
 ${COMPLIANCE_GUIDELINES}
 
-LENGTH CONSTRAINTS (CRITICAL):
-- Each "FALA EM PT-BR" section must be SHORT, PUNCHY and FAST.
-- MAXIMUM 20 WORDS PER PART. Do not exceed 20 words per spoken section.
-- Be direct. Eliminate fluff.
+COPYWRITING STRATEGY (CRITICAL):
+- USE PRICE ANCHORING: Compare the product value to physical stores. Example: "In physical stores this costs X, but here it's Y".
+- TONE: Informal, viral, enthusiastic ("Sério, isso é a chave", "Você não vai acreditar", "Esquece tudo").
+- BE CREATIVE: Do not use robotic language. Write exactly how a Brazilian influencer speaks.
+
+LENGTH CONSTRAINTS:
+- Each "FALA EM PT-BR" section must be PUNCHY. MAX 25 WORDS per part.
 
 Output Format Requirements (STRICTLY FOLLOW THIS STRUCTURE AND TITLES):
 
-ESTILO UGC (User Generated Content): [Short Strategy Description, e.g., "Review direto e rápido"]
+ESTILO UGC: [Short Strategy Description]
 
 PARTE 1 - GANCHO:
-CENA: [Visual description of the scene]
-FALA EM PT-BR: [Spoken text in natural Brazilian Portuguese - MAX 20 WORDS, focused on grabbing attention and highlighting a problem/desire]
+CENA: [Visual description of the scene - Creative & Eye Catching]
+FALA EM PT-BR: [Hook the viewer instantly. Use curiosity or shock.]
 
-PARTE 2 - CTA:
-CENA: [Visual description of the scene]
-FALA EM PT-BR: [Spoken text in natural Brazilian Portuguese - MAX 20 WORDS, focused on a clear, urgent call to action to buy from the orange cart]
+PARTE 2 - VALOR:
+CENA: [Visual description of the scene - Product in action/Close up]
+FALA EM PT-BR: [The "Selling Logic". Compare prices, show hidden benefits. E.g., "Normalmente custa 100 reais no shopping, mas aqui no TikTok Shop tá saindo por menos de 50!"]
+
+PARTE 3 - CTA:
+CENA: [Visual description of the scene - Product clear view]
+FALA EM PT-BR: [Strong urgency. Drive to the orange cart.]
 
 IMPORTANT: No text overlays, no captions, no visual elements on screen. Only the presenter and the product.
 `;
@@ -122,15 +129,15 @@ const getVeoPrompt = (productTitle: string) => {
     return `
 Product Name: ${productTitle}
 
-Generate a high-converting 2-part UGC script (16s total) for a TikTok Shop ad.
-Focus on compelling, sales-driven copy for each part.
+Generate a high-converting 3-PART UGC script (24s total) for a TikTok Shop ad.
+Focus on creative, viral copy with price comparisons (Anchor Pricing).
 
 Structure:
-Part 1 (Hook): Create an immediate, strong hook that grabs attention and highlights a key benefit or solves a pain point related to "${productTitle}". (MAX 20 WORDS)
-Part 2 (Call to Action): Deliver a powerful, urgent call to action, driving the viewer to click the "carrinho laranja" (orange cart) for "${productTitle}". (MAX 20 WORDS)
+Part 1 (Hook): Stop the scroll. Make a bold statement or ask a shocking question.
+Part 2 (Value/Comparison): The "Logic". Use the "Physical Store vs TikTok Shop" price comparison strategy. (e.g., "Normally $100, here <$50").
+Part 3 (Call to Action): Close the deal. Direct them to the Orange Cart immediately.
 
 Ensure the output exactly matches the requested format with "PARTE X - [TITLE]:", "CENA:", and "FALA EM PT-BR:".
-Keep sentences short, dynamic, and persuasive.
 End with the IMPORTANT line.
 `;
 };
@@ -170,7 +177,7 @@ export const generateScript = async (
             },
             config: {
                 systemInstruction: systemInstruction,
-                temperature: 0.7, // Creativity balanced with format adherence
+                temperature: 0.85, // Higher temperature for more creativity/boldness in copy
             }
         });
 
@@ -203,13 +210,14 @@ export const parseVeo3Script = (promptText: string): ParsedScript | null => {
 
     const partConfigs = [
         { title: 'GANCHO', timing: '0-8s', partNum: 1 },
-        { title: 'CTA', timing: '8-16s', partNum: 2 },
+        { title: 'VALOR', timing: '8-16s', partNum: 2 },
+        { title: 'CTA', timing: '16-24s', partNum: 3 },
     ];
 
     for (const config of partConfigs) {
         const nextPartNum = config.partNum + 1;
-        // Strict regex for "PARTE X - TITLE" as enforced in the prompt
-        const sectionHeaderRegex = `PARTE ${config.partNum}\\s*-\\s*${config.title}`;
+        // Regex to find "PARTE X - TITLE" or just "PARTE X" loosely to be safe, but targeting the prompt format
+        const sectionHeaderRegex = `PARTE ${config.partNum}[^\\n]*`;
         const lookahead = `(?=PARTE ${nextPartNum}|IMPORTANT:|$)`;
         const partRegex = new RegExp(`(${sectionHeaderRegex})([\\s\\S]*?)${lookahead}`, 'i');
         
