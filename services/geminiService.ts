@@ -65,11 +65,7 @@ PARTE 1 - GANCHO:
 CENA: [Visual description of the scene]
 FALA EM PT-BR: [Spoken text in natural Brazilian Portuguese - MAX 20 WORDS]
 
-PARTE 2 - CONTEÚDO:
-CENA: [Visual description of the scene]
-FALA EM PT-BR: [Spoken text in natural Brazilian Portuguese - MAX 20 WORDS]
-
-PARTE 3 - CTA:
+PARTE 2 - CTA:
 CENA: [Visual description of the scene]
 FALA EM PT-BR: [Spoken text in natural Brazilian Portuguese - MAX 20 WORDS]
 
@@ -126,12 +122,11 @@ const getVeoPrompt = (productTitle: string) => {
     return `
 Product Name: ${productTitle}
 
-Generate a high-converting 3-part UGC script (24s total).
+Generate a high-converting 2-part UGC script (16s total).
 
 Structure:
 Part 1 (Hook): Grab attention immediately. (MAX 20 WORDS)
-Part 2 (Content): Explain why this product is amazing. (MAX 20 WORDS)
-Part 3 (CTA): Strong call to action for the "carrinho laranja". (MAX 20 WORDS)
+Part 2 (Call to Action): Strong call to action for the "carrinho laranja". (MAX 20 WORDS)
 
 Ensure the output exactly matches the requested format with "PARTE X - [TITLE]:", "CENA:", and "FALA EM PT-BR:".
 Keep sentences short and dynamic.
@@ -207,13 +202,13 @@ export const parseVeo3Script = (promptText: string): ParsedScript | null => {
 
     const partConfigs = [
         { title: 'GANCHO', timing: '0-8s', partNum: 1 },
-        { title: 'CONTEÚDO', timing: '8-16s', partNum: 2 },
-        { title: 'CTA', timing: '16-24s', partNum: 3 },
+        { title: 'CTA', timing: '8-16s', partNum: 2 }, // Updated title and timing for 2-part structure
     ];
 
     for (const config of partConfigs) {
         const nextPartNum = config.partNum + 1;
-        const sectionHeaderRegex = `PARTE ${config.partNum}[^\\n]*?${config.title}`;
+        // Adjusted regex to match the new titles for the 2-part structure
+        const sectionHeaderRegex = `PARTE ${config.partNum}[^\\n]*?(${config.title}|${config.partNum === 2 ? 'CALL TO ACTION' : ''})`; // Added 'CALL TO ACTION' for robustness
         const lookahead = `(?=PARTE ${nextPartNum}|IMPORTANT:|$)`;
         const partRegex = new RegExp(`(${sectionHeaderRegex})([\\s\\S]*?)${lookahead}`, 'i');
         

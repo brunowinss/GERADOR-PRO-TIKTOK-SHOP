@@ -37,8 +37,8 @@ export const BRANDS: Brand[] = [
         display: 'Wins.shop', 
         icon: 'Music', 
         model: 'Veo3', 
-        duration: '8s',
-        hook: '🎵 Modelo Veo3 - Alta conversão rápida!',
-        description: 'Formato de 8 segundos otimizado para retenção máxima. Perfeito para produtos de impulso e promoções relâmpago.'
+        duration: '16s', // Atualizado para 2 partes (8s por parte)
+        hook: '🎵 Modelo Veo3 - Alta conversão e direta!',
+        description: 'Formato de 16 segundos com 2 partes para máxima retenção e CTA direto. Perfeito para produtos de impulso e promoções rápidas.'
     },
 ];
