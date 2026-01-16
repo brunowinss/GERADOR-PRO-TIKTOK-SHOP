@@ -52,10 +52,21 @@ Your task is to analyze product images and generate a structured 3-PART UGC scri
 
 ${COMPLIANCE_GUIDELINES}
 
+TARGET AESTHETIC & CONTEXT (INTERNAL GUIDE):
+- STYLE: Minimalist fashion, clean lines, neutral colors, sophisticated.
+- CHARACTER: Fictional woman, calm, elegant, and confident. Fashion influencer vibe.
+- SETTING: Modern and elegant fitting room. Large mirror, soft indirect lighting.
+- ACTIONS: Mirror selfie POV. Holding phone, adjusting outfit, subtle movements (zoom/tilt).
+- TONE KEYPHRASE: "Olha isso... simplesmente perfeito."
+
+VISUAL STYLE (OUTPUT RULES):
+- The video is a SINGLE CONTINUOUS TAKE based on the "Target Aesthetic" above.
+- DO NOT generate "CENA:" lines in the output. The visual is implied to be the specific mirror selfie setting described.
+
 COPYWRITING STRATEGY (CRITICAL):
 - USE PRICE ANCHORING: Compare the product value to physical stores. Example: "In physical stores this costs X, but here it's Y".
-- TONE: Informal, viral, enthusiastic ("Sério, isso é a chave", "Você não vai acreditar", "Esquece tudo").
-- SPEECH FLOW: The "FALA EM PT-BR" must be a CONTINUOUS paragraph. NO pauses, NO line breaks within a speech section. It must flow like one fast breath.
+- TONE: Informal but POLISHED and ELEGANT. Matches the "Clean Fashion" visual.
+- SPEECH FLOW: The "FALA EM PT-BR" must be a CONTINUOUS paragraph. NO pauses, NO line breaks within a speech section.
 
 LENGTH CONSTRAINTS:
 - Each "FALA EM PT-BR" section must be PUNCHY. MAX 25 WORDS per part.
@@ -65,16 +76,13 @@ Output Format Requirements (STRICTLY FOLLOW THIS STRUCTURE AND TITLES):
 ESTILO UGC: [Short Strategy Description]
 
 PARTE 1 - GANCHO:
-CENA: [Visual description of the scene - Creative & Eye Catching]
-FALA EM PT-BR: [Continuous text. Hook the viewer instantly using curiosity or shock. No line breaks.]
+FALA EM PT-BR: [Continuous text. Hook the viewer instantly. No line breaks.]
 
 PARTE 2 - VALOR:
-CENA: [Visual description of the scene - Product in action/Close up]
-FALA EM PT-BR: [Continuous text. The "Selling Logic". Compare prices: "Normalmente custa X na loja, mas aqui tá Y". No line breaks.]
+FALA EM PT-BR: [Continuous text. Price comparison logic. No line breaks.]
 
 PARTE 3 - CTA:
-CENA: [Visual description of the scene - Product clear view]
-FALA EM PT-BR: [Continuous text. Strong urgency. Drive to the orange cart. No line breaks.]
+FALA EM PT-BR: [Continuous text. Strong urgency. No line breaks.]
 
 IMPORTANT: No text overlays, no captions, no visual elements on screen. Only the presenter and the product.
 `;
@@ -133,12 +141,15 @@ Generate a high-converting 3-PART UGC script (24s total) for a TikTok Shop ad.
 Focus on creative, viral copy with price comparisons (Anchor Pricing).
 
 Structure:
-Part 1 (Hook): Stop the scroll. Make a bold statement or ask a shocking question.
-Part 2 (Value/Comparison): The "Logic". Use the "Physical Store vs TikTok Shop" price comparison strategy. (e.g., "Normally $100, here <$50").
-Part 3 (Call to Action): Close the deal. Direct them to the Orange Cart immediately.
+Part 1 (Hook): Stop the scroll.
+Part 2 (Value/Comparison): The "Logic". Physical Store vs TikTok Shop comparison.
+Part 3 (Call to Action): Close the deal.
 
-Ensure the output exactly matches the requested format with "PARTE X - [TITLE]:", "CENA:", and "FALA EM PT-BR:".
+Ensure the output exactly matches the requested format with "PARTE X - [TITLE]:" and "FALA EM PT-BR:".
+DO NOT output "CENA:" lines. The visual is a static mirror selfie (Clean/Minimalist/Fashion style).
 The "FALA" in each part must be a single, continuous sentence/paragraph without line breaks.
+
+TONE REMINDER: "Olha isso... simplesmente perfeito." - Elegant, calm, confident.
 `;
 };
 
@@ -225,6 +236,7 @@ export const parseVeo3Script = (promptText: string): ParsedScript | null => {
         
         if (partMatch && partMatch[2]) {
             const rawContent = partMatch[2].trim();
+            // Scene match is now optional or will be empty since we requested NO SCENES
             const sceneMatch = rawContent.match(/CENA:\s*([\s\S]*?)(?=FALA EM PT-BR:|$)/i);
             const scene = sceneMatch ? sceneMatch[1].trim() : '';
             
