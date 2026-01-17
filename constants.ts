@@ -38,7 +38,7 @@ export const BRANDS: Brand[] = [
         icon: 'Music', 
         model: 'Veo3', 
         duration: '24s', // Updated to 24s (3 parts)
-        hook: '✨ Elegância Viral: Roteiros de Moda com Ancoragem de Preço!',
-        description: 'Scripts de 24s para moda minimalista e elegante (mirror selfie). Foco em ancoragem de preço, com gancho, comparação de valor e CTA agressivo.'
+        hook: '🚨 Venda Moda com Impacto: Scripts Virais para TikTok Shop!',
+        description: 'Roteiros de 24s para moda minimalista e elegante (estilo mirror selfie). Estratégias de venda irresistíveis com gancho magnético, ancoragem de preço inteligente e CTA explosivo para alta conversão.'
     },
 ];
