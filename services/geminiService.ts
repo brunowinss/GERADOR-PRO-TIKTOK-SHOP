@@ -37,6 +37,9 @@ AUDIO RULES:
 - The video is only 10 seconds long. The speech must be extremely concise and direct.
 - Do not use disconnected sentences. It should read like one cohesive speech split into lines.
 
+COPY VARIATION (IMPORTANT):
+- Ensure each generated script is unique. Avoid repetitive phrasing or identical sentence structures across different requests, while still adhering to all other rules, especially length limits.
+
 OUTPUT FORMAT:
 1. Visual Line (Strict Template)
 2. FALA: [Speech Line 1]
@@ -71,6 +74,9 @@ COPYWRITING STRATEGY (CRITICAL):
 
 LENGTH CONSTRAINTS:
 - Each "FALA EM PT-BR" section must be PUNCHY. MAX 25 WORDS per part.
+
+COPY VARIATION (IMPORTANT):
+- Ensure each generated script is unique. Avoid repetitive phrasing or identical sentence structures across different requests, especially for the GANCHO, VALOR, and CTA sections. Strive for fresh, diverse linguistic expression while adhering to all other rules.
 
 Output Format Requirements (STRICTLY FOLLOW THIS STRUCTURE AND TITLES):
 
