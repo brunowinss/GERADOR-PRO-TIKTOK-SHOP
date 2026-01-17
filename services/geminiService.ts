@@ -54,7 +54,7 @@ ${COMPLIANCE_GUIDELINES}
 
 TARGET AESTHETIC & CONTEXT (INTERNAL GUIDE):
 - STYLE: Minimalist fashion, clean lines, neutral colors, sophisticated.
-- CHARACTER: Fictional woman, calm, elegant, and confident. Fashion influencer vibe.
+- CHARACTER: Fictional woman, calm, elegant, and confident. Fashion influencer vibe. NO explicit facial expressions.
 - SETTING: Modern and elegant fitting room. Large mirror, soft indirect lighting.
 - ACTIONS: Mirror selfie POV. Holding phone, adjusting outfit, subtle movements (zoom/tilt).
 - TONE KEYPHRASE: "Olha isso... simplesmente perfeito."
