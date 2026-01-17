@@ -62,6 +62,7 @@ TARGET AESTHETIC & CONTEXT (INTERNAL GUIDE):
 VISUAL STYLE (OUTPUT RULES):
 - The video is a SINGLE CONTINUOUS TAKE based on the "Target Aesthetic" above.
 - DO NOT generate "CENA:" lines in the output. The visual is implied to be the specific mirror selfie setting described.
+- CRITICAL: The final video MUST NOT have any text overlays, captions, graphics, cards, or any textual elements on screen. Only the presenter and the product.
 
 COPYWRITING STRATEGY (CRITICAL):
 - USE PRICE ANCHORING: Compare the product value to physical stores. Example: "In physical stores this costs X, but here it's Y".

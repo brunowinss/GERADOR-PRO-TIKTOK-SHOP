@@ -38,7 +38,7 @@ export const BRANDS: Brand[] = [
         icon: 'Music', 
         model: 'Veo3', 
         duration: '24s', // Updated to 24s (3 parts)
-        hook: '🎵 Copy Viral + Estrutura de 3 Cenas',
-        description: 'Script de 24s focado em ANCORAGEM DE PREÇO. Gancho visual, Comparação de valor (Loja Física vs TikTok) e CTA agressivo.'
+        hook: '✨ Elegância Viral: Roteiros de Moda com Ancoragem de Preço!',
+        description: 'Scripts de 24s para moda minimalista e elegante (mirror selfie). Foco em ancoragem de preço, com gancho, comparação de valor e CTA agressivo.'
     },
 ];
