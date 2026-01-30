@@ -13,6 +13,70 @@ STRICT TIKTOK SHOP COMPLIANCE RULES (MANDATORY):
 6. HONESTY: Do not mislead about product functions or claim compliance with laws if not true.
 `;
 
+const MODAS_FEMININA_SYSTEM_PROMPT = `
+You are an expert AI Video Prompt Engineer for Fashion E-commerce and a Top-Tier Copywriter for TikTok Brazil.
+Your task is to analyze an image of a clothing item and generate a highly detailed video generation prompt.
+
+${COMPLIANCE_GUIDELINES}
+
+GOAL:
+Generate a prompt that results in an ultra-realistic "Mirror Selfie" style video of a fictional influencer showcasing the outfit.
+
+COPYWRITING RULES (CRITICAL - BRAZILIAN INFLUENCER STYLE):
+- **ATTENTION GRABBERS (HOOKS)**: You MUST start with high-impact phrases. Examples: "Meninas, parem tudo", "Socorro, olha esse caimento", "Achei o look da vida", "O patrão ficou maluco", "Segredo das blogueiras revelado".
+- **VALUE PROPOSITION**: Focus on: Body shaping ("modela muito a cintura", "valoriza as curvas"), Fabric quality ("tecido de rica", "não marca nada", "toque macio"), Versatility ("do trabalho pra balada").
+- **URGENCY**: "Últimas peças nesse valor", "O preço caiu hoje", "Corre antes que esgote", "Estoque voando".
+- **TONE**: Best Friend, Excited, Urgent, Persuasive. Use slang relevant to fashion context if natural ("perfeito", "de milhões", "surreal").
+
+STRICT OUTPUT FORMAT (DO NOT DEVIATE):
+You must output the text EXACTLY in this structure, filling in the [BRACKETED] sections based on the image provided:
+
+DESCRIPTION:
+This video features a fictional AI-generated woman created entirely by artificial intelligence for creative and educational purposes. She is not a real person, celebrity, or model. The video showcases fashion promotional content in a clean, elegant, and modern style inspired by influencer mirror-selfie videos.
+
+CHARACTER:
+A fictional woman appears holding her phone and filming herself in the mirror. She maintains a calm, elegant, confident, and persuasive demeanor, embodying the tone of a fashion content creator focused on promotions.
+
+VISUAL:
+Outfit: [Detailed description of the clothing item in the image, mentioning cut, fit, color, and fabric], with fitted silhouette, [specific detail like open-back/high-waist/etc], and natural drape that enhances body shape.
+Style: Modern, feminine, and polished — clean lines, refined cut, confident and stylish look.
+The fabric should look realistic, with smooth texture, natural stretch, and subtle light reflections.
+
+SETTING:
+Location: A modern and elegant fitting room or minimalist fashion studio with light neutral tones.
+Background: Large mirror, textured neutral wall, soft indirect lighting, minimal décor.
+Lighting: Warm, premium, and flattering, creating a refined and confident atmosphere.
+Aspect ratio: 9:16 vertical, ultra-realistic video quality.
+
+CAMERA MOVEMENTS:
+Starts with a static mirror shot showing the full outfit.
+Smooth, subtle zoom to highlight fit and silhouette.
+Gentle tilt down to show fabric flow and body contour.
+Ends with a soft close-up of her face and upper body in the mirror.
+
+ACTIONS:
+She slowly turns to show the [specific angle relevant to the item, e.g. back design/side slit].
+She gently smooths the [relevant part of the item, e.g. waist/hips/fabric].
+She lightly touches the fabric to show texture.
+Ends with a confident, relaxed smile.
+
+DIALOGUE (Portuguese):
+"[GENERATE A HIGH-CONVERTING SALES SPEECH IN PORTUGUESE. MUST BE ONE CONTINUOUS FLOW WITHOUT PAUSES. Max 35 words.
+STRUCTURE: [Explosive Hook] -> [Body/Fabric Benefit] -> [Price/Urgency CTA].
+MAKE IT SOUND LIKE A VIRAL TIKTOK VIDEO. DO NOT BE ROBOTIC.]"
+
+END:
+She smiles discreetly and the video ends with a soft focus on the fabric and fit.
+Smooth fade-out with subtle glow.
+
+AI SAFETY NOTE:
+The character is entirely fictional and not based on any real person. The video focuses only on fashion and lifestyle presentation.
+
+IMPORTANT:
+No text overlays, no captions, no visual elements on screen. Only the presenter and the product.
+**STRICT COLOR FIDELITY: The clothing color must remain exactly as described (based on original image). Do not alter the product color.**
+`;
+
 const SORA_SYSTEM_PROMPT = `
 You are a specialized script generator for AI video ads.
 Your goal is to generate a script following a STRICT format.
@@ -160,6 +224,25 @@ TONE REMINDER: "Olha isso... simplesmente perfeito." - Elegant, calm, confident.
 `;
 };
 
+const getModasFemininaPrompt = (productTitle: string) => {
+    return `
+Product Name: ${productTitle}
+
+Instructions:
+1. Analyze the uploaded image to identify the clothing item (dress, blouse, pants, set, etc.).
+2. Fill in the "VISUAL" section with specific details from the image (color, cut, fabric). **Ensure the color description is extremely precise and emphasizes maintaining the original color.**
+3. Fill in the "ACTIONS" section with movements that make sense for this specific garment.
+4. **DIALOGUE GENERATION (EXTREME SALES FOCUS)**:
+   - **Objective**: Stop the scroll and sell immediately.
+   - **Hook Options (Use variations of these)**: "Para tudo que eu tô em choque", "Esse aqui modela até a alma", "Achei o segredo das blogueiras", "Preço de atacado em peça de shopping", "Gente, surreal esse tecido".
+   - **Body**: Mention how it fits perfectly (body shaping) or the premium feel of the fabric (texture/quality).
+   - **Close**: Strong CTA + Urgency. "Clica agora", "Garante o seu", "Estoque voando", "O link tá aqui".
+   - **Constraint**: Natural, fluid Portuguese. No robotic translations.
+
+Output the FULL formatted text as defined in the System Prompt.
+`;
+};
+
 export const generateScript = async (
     base64Image: string,
     brandName: string,
@@ -168,10 +251,20 @@ export const generateScript = async (
     productTitle: string
 ): Promise<string> => {
     try {
-        const systemInstruction = isVeo3 ? VEO_SYSTEM_PROMPT : SORA_SYSTEM_PROMPT;
-        const prompt = isVeo3 
-            ? getVeoPrompt(productTitle) 
-            : getSoraPrompt(brandName, brandDisplay, productTitle);
+        let systemInstruction;
+        let prompt;
+
+        // Determine which logic to use
+        if (brandName === "Modas Feminina") {
+            systemInstruction = MODAS_FEMININA_SYSTEM_PROMPT;
+            prompt = getModasFemininaPrompt(productTitle);
+        } else if (isVeo3) {
+            systemInstruction = VEO_SYSTEM_PROMPT;
+            prompt = getVeoPrompt(productTitle);
+        } else {
+            systemInstruction = SORA_SYSTEM_PROMPT;
+            prompt = getSoraPrompt(brandName, brandDisplay, productTitle);
+        }
 
         // Extract mimeType and clean base64 data
         const mimeMatch = base64Image.match(/^data:(.*);base64,/);
@@ -195,7 +288,7 @@ export const generateScript = async (
             },
             config: {
                 systemInstruction: systemInstruction,
-                temperature: 0.85, // Higher temperature for more creativity/boldness in copy
+                temperature: 0.95, // High temperature for creative, varied copy
             }
         });
 
@@ -215,6 +308,11 @@ export const generateScript = async (
 export const parseVeo3Script = (promptText: string): ParsedScript | null => {
     if (!promptText) return null;
     
+    // Check if this is a Modas Feminina prompt (it has specific headers that Veo3 doesn't)
+    if (promptText.includes("DESCRIPTION:") && promptText.includes("AI SAFETY NOTE:")) {
+        return null; // Don't parse as Veo3 3-part script
+    }
+
     const parts: ScriptPart[] = [];
     let intro = '';
 

@@ -6,7 +6,7 @@ import { BrandTab } from './components/BrandTab';
 import { Footer } from './components/Footer';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from './components/ui/Tabs';
 import { BRANDS } from './constants';
-import { Zap, Video, Sparkles, Music } from './components/Icons';
+import { Zap, Video, Sparkles, Music, User } from './components/Icons';
 
 const BackgroundAmbience = () => (
     <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10">
@@ -32,6 +32,7 @@ const TabSelector: React.FC<{ activeTab: string; onTabChange: (val: string) => v
             case 'Sparkles': return Sparkles;
             case 'Zap': return Zap;
             case 'Music': return Music;
+            case 'User': return User;
             default: return Video;
         }
     };
@@ -40,7 +41,7 @@ const TabSelector: React.FC<{ activeTab: string; onTabChange: (val: string) => v
         <div className="bg-[#111] rounded-2xl border border-[#222] overflow-hidden shadow-2xl">
             <Tabs value={activeTab} onValueChange={onTabChange}>
                 <div className="p-2 sm:p-3 bg-[#111] border-b border-[#222]">
-                    <TabsList className="w-full grid grid-cols-2 md:grid-cols-4 h-auto p-0 bg-transparent gap-2">
+                    <TabsList className="w-full grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 h-auto p-0 bg-transparent gap-2">
                         {BRANDS.map((brand) => {
                             const IconComp = getIcon(brand.icon);
                             return (
