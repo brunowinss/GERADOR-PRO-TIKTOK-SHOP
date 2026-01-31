@@ -32,33 +32,33 @@ STRICT OUTPUT FORMAT (DO NOT DEVIATE):
 You must output the text EXACTLY in this structure, filling in the [BRACKETED] sections based on the image provided:
 
 DESCRIPTION:
-This video features a fictional AI-generated woman created entirely by artificial intelligence for creative and educational purposes. She is not a real person, celebrity, or model. The video showcases fashion promotional content in a clean, elegant, and modern style inspired by influencer mirror-selfie videos.
+This video features a fictional AI-generated woman created for fashion promotion. She is a digital persona showcasing a look in a modern mirror selfie style to demonstrate fit and style.
 
 CHARACTER:
-A fictional woman appears holding her phone and filming herself in the mirror. She maintains a calm, elegant, confident, and persuasive demeanor, embodying the tone of a fashion content creator focused on promotions.
+A fictional digital influencer. She is confident, charismatic, and persuasive, maintaining a friendly and energetic fashion vlogger persona.
 
 VISUAL:
-Outfit: [Detailed description of the clothing item in the image, mentioning cut, fit, color, and fabric], with fitted silhouette, [specific detail like open-back/high-waist/etc], and natural drape that enhances body shape.
-Style: Modern, feminine, and polished — clean lines, refined cut, confident and stylish look.
-The fabric should look realistic, with smooth texture, natural stretch, and subtle light reflections.
+Look: [Detailed description of the clothing item in the image, mentioning cut, fit, color, and fabric].
+Style: Feminine, modern, and polished.
+The fabric should appear realistic with natural movement. **The color should remain a saturated and consistent [insert precise color from image] throughout the video.**
 
 SETTING:
-Location: A modern and elegant fitting room or minimalist fashion studio with light neutral tones.
-Background: Large mirror, textured neutral wall, soft indirect lighting, minimal décor.
-Lighting: Warm, premium, and flattering, creating a refined and confident atmosphere.
-Aspect ratio: 9:16 vertical, ultra-realistic video quality.
+Location: Minimalist fashion studio with neutral beige walls.
+Background: Large floor-to-ceiling mirror and soft indirect sunlight.
+Lighting: Bright, warm, and flattering to highlight the fabric details.
+Aspect ratio: 9:16 vertical, 4K resolution.
 
 CAMERA MOVEMENTS:
-Starts with a static mirror shot showing the full outfit.
-Smooth, subtle zoom to highlight fit and silhouette.
-Gentle tilt down to show fabric flow and body contour.
-Ends with a soft close-up of her face and upper body in the mirror.
+Begins with a full-body wide shot in the mirror.
+Subtle zoom towards the waist and bust.
+Gently tilts downwards to show the hem and the drape.
+Ends with a medium shot of the character's expression.
 
 ACTIONS:
-She slowly turns to show the [specific angle relevant to the item, e.g. back design/side slit].
-She gently smooths the [relevant part of the item, e.g. waist/hips/fabric].
-She lightly touches the fabric to show texture.
-Ends with a confident, relaxed smile.
+She turns slightly to show the side profile and the fitted silhouette.
+[Insert 1 specific action relevant to the item, e.g., adjusts strap/smooths waist/hands in pockets].
+She runs her hand along the fabric to emphasize the texture and drape.
+Ends with a radiant smile and a thumbs-up to the mirror.
 
 DIALOGUE (Portuguese):
 "[GENERATE A HIGH-CONVERTING SALES SPEECH IN PORTUGUESE. MUST BE ONE CONTINUOUS FLOW WITHOUT PAUSES. Max 35 words.
@@ -66,15 +66,14 @@ STRUCTURE: [Explosive Hook] -> [Body/Fabric Benefit] -> [Price/Urgency CTA].
 MAKE IT SOUND LIKE A VIRAL TIKTOK VIDEO. DO NOT BE ROBOTIC.]"
 
 END:
-She smiles discreetly and the video ends with a soft focus on the fabric and fit.
-Smooth fade-out with subtle glow.
+She blows a kiss to the mirror; The video ends with a soft shimmering effect.
 
 AI SAFETY NOTE:
-The character is entirely fictional and not based on any real person. The video focuses only on fashion and lifestyle presentation.
+The character is entirely fictional. The content is intended strictly for fashion marketing and creative presentation.
 
 IMPORTANT:
 No text overlays, no captions, no visual elements on screen. Only the presenter and the product.
-**STRICT COLOR FIDELITY: The clothing color must remain exactly as described (based on original image). Do not alter the product color.**
+**STRICT COLOR FIDELITY: The clothing color must remain exactly as described.**
 `;
 
 const SORA_SYSTEM_PROMPT = `
