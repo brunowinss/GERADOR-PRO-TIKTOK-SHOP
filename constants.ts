@@ -36,10 +36,10 @@ export const BRANDS: Brand[] = [
         name: 'Wins.shop', 
         display: 'Wins.shop', 
         icon: 'Music', 
-        model: 'Veo3', 
-        duration: '24s',
-        hook: '🚨 Venda Moda com Impacto: Scripts Virais para TikTok Shop!',
-        description: 'Roteiros de 24s para moda minimalista e elegante (estilo mirror selfie). Estratégias de venda irresistíveis com gancho magnético, ancoragem de preço inteligente e CTA explosivo para alta conversão.'
+        model: 'UGC AI', 
+        duration: '16s',
+        hook: '📱 UGC Viral: Autenticidade que Converte',
+        description: 'Roteiros estilo UGC (User Generated Content) divididos em 2 partes de 8s. Foco em naturalidade, "estética de celular" e prova social imediata.'
     },
     { 
         id: 'modas-feminina', 

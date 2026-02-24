@@ -4,23 +4,19 @@ import react from '@vitejs/plugin-react';
 export default defineConfig(({ mode }) => {
   // Load env file based on `mode` in the current working directory.
   // Set the third parameter to '' to load all env regardless of the `VITE_` prefix.
-  const env = loadEnv(mode, (process as any).cwd(), '');
+  const env = loadEnv(mode, process.cwd(), '');
 
-  // Vercel deployment screenshot shows the environment variable named as "key"
-  // We check for both API_KEY (standard) and key (user configuration)
-  const apiKey = env.API_KEY || env.key;
+  // Check for API key in various possible locations
+  // process.env takes precedence, then loaded env vars
+  const apiKey = process.env.API_KEY || env.API_KEY || env.key || process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
 
   // Use environment variables or fallback to the provided user credentials.
-  const supabaseUrl = env.SUPABASE_URL || 'https://jmyjgluqqoqrehhrjtxy.supabase.co';
-  const supabaseAnonKey = env.SUPABASE_ANON_KEY || 'sb_publishable_M8TYgTrkori8O8Nf5uNlOg_2NL06kDt';
-
+  
   return {
     plugins: [react()],
     define: {
       // This ensures process.env.API_KEY works in the client-side code
       'process.env.API_KEY': JSON.stringify(apiKey || ''),
-      'process.env.SUPABASE_URL': JSON.stringify(supabaseUrl),
-      'process.env.SUPABASE_ANON_KEY': JSON.stringify(supabaseAnonKey)
     }
   };
 });

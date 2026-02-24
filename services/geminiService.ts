@@ -1,8 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
 import { ParsedScript, ScriptPart } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-
 const COMPLIANCE_GUIDELINES = `
 STRICT TIKTOK SHOP COMPLIANCE RULES (MANDATORY):
 1. NO FALSE SCARCITY: Do not claim "Limited time only", "Last chance", or "Ending soon" to pressure an immediate decision unless strictly true. Do not deprive the buyer of sufficient time to make a conscious choice.
@@ -113,46 +111,39 @@ OUTPUT FORMAT:
 `;
 
 const VEO_SYSTEM_PROMPT = `
-You are an expert UGC (User Generated Content) creator scriptwriter for TikTok Shop.
-Your task is to analyze product images and generate a structured 3-PART UGC script formatted specifically for "Veo 3".
+You are an expert UGC (User Generated Content) Scriptwriter for TikTok Shop.
+Your goal is to generate short, viral, authentic scripts that feel like organic content (UGC).
+The content MUST be split into exactly 2 PARTS of 8 SECONDS each (Total 16s).
 
 ${COMPLIANCE_GUIDELINES}
 
-TARGET AESTHETIC & CONTEXT (INTERNAL GUIDE):
-- STYLE: Minimalist fashion, clean lines, neutral colors, sophisticated.
-- CHARACTER: Fictional woman, calm, elegant, and confident. Fashion influencer vibe. NO explicit facial expressions.
-- SETTING: Modern and elegant fitting room. Large mirror, soft indirect lighting.
-- ACTIONS: Mirror selfie POV. Holding phone, adjusting outfit, subtle movements (zoom/tilt).
-- TONE KEYPHRASE: "Olha isso... simplesmente perfeito."
+AESTHETIC & VIBE:
+- Handheld camera style (iPhone POV).
+- Natural lighting, real home environment or fitting room.
+- Presenter is a "real person" (UGC Creator), not a polished model.
+- High energy, authentic, enthusiastic.
 
-VISUAL STYLE (OUTPUT RULES):
-- The video is a SINGLE CONTINUOUS TAKE based on the "Target Aesthetic" above.
-- DO NOT generate "CENA:" lines in the output. The visual is implied to be the specific mirror selfie setting described.
-- CRITICAL: The final video MUST NOT have any text overlays, captions, graphics, cards, or any textual elements on screen. Only the presenter and the product.
+CREATIVITY & VARIETY (CRITICAL):
+- **NEVER** use the same hook twice.
+- **AVOID** generic phrases like "Check this out" or "I found the best product".
+- **USE** specific angles: Humor, Shock, Curiosity, "Don't buy this unless...", "My secret weapon", etc.
+- **VARY** the sentence structure and vocabulary.
+- Make it sound like a REAL person talking to a friend, not a robot reading a script.
 
-COPYWRITING STRATEGY (CRITICAL):
-- USE PRICE ANCHORING: Compare the product value to physical stores. Example: "In physical stores this costs X, but here it's Y".
-- TONE: Informal but POLISHED and ELEGANT. Matches the "Clean Fashion" visual.
-- SPEECH FLOW: The "FALA EM PT-BR" must be a CONTINUOUS paragraph. NO pauses, NO line breaks within a speech section.
+NEGATIVE CONSTRAINTS (CRITICAL):
+- DO NOT describe visual UI elements (buttons, icons, text bubbles, subtitles, shopping carts).
+- DO NOT say "pointing to the cart" or "pointing to link". Instead, say "pointing to the bottom left corner".
+- DO NOT describe any overlay text in the scene. The video must be CLEAN.
 
-LENGTH CONSTRAINTS:
-- Each "FALA EM PT-BR" section must be PUNCHY. MAX 25 WORDS per part.
+OUTPUT FORMAT (STRICTLY FOLLOW THIS):
 
-COPY VARIATION (IMPORTANT):
-- Ensure each generated script is unique. Avoid repetitive phrasing or identical sentence structures across different requests, especially for the GANCHO, VALOR, and CTA sections. Strive for fresh, diverse linguistic expression while adhering to all other rules.
-
-Output Format Requirements (STRICTLY FOLLOW THIS STRUCTURE AND TITLES):
-
-ESTILO UGC: [Short Strategy Description]
+ESTILO UGC: [Short description of style, e.g. "Unboxing Rápido", "Provador Real", "Relato Sincero", "Dica de Amiga"]
 
 PARTE 1 - GANCHO:
-FALA EM PT-BR: [Continuous text. Hook the viewer instantly. No line breaks.]
+FALA EM PT-BR: [Hook speech. Natural, fast. Max 20 words. MUST BE CATCHY.]
 
-PARTE 2 - VALOR:
-FALA EM PT-BR: [Continuous text. Price comparison logic. No line breaks.]
-
-PARTE 3 - CTA:
-FALA EM PT-BR: [Continuous text. Strong urgency. No line breaks.]
+PARTE 2 - CTA:
+FALA EM PT-BR: [Closing speech with urgency. Max 20 words. STRONG CTA.]
 
 IMPORTANT: No text overlays, no captions, no visual elements on screen. Only the presenter and the product.
 `;
@@ -187,7 +178,7 @@ The first line MUST be exactly:
 SCRIPT CONTENT:
 Generate a short, punchy sales pitch in Portuguese.
 CRITICAL: The total word count of all "FALA" lines combined MUST NOT EXCEED 40 WORDS.
-The video is short (10s). Be direct.
+The video is only 10 seconds long. Be direct.
 End with "clica no carrinho laranja".
 
 REQUIRED OUTPUT FORMAT (Ensure the IMPORTANT line is included at the end):
@@ -204,22 +195,32 @@ IMPORTANT: No text overlays, no captions, no visual elements on screen. Only the
 };
 
 const getVeoPrompt = (productTitle: string) => {
+    const angles = [
+        "Shock/Disbelief ('I can't believe I found this')",
+        "Secret/Gatekeeping ('I wasn't going to share this...')",
+        "Problem/Solution ('Stop struggling with...')",
+        "Direct Benefit ('This changed my routine')",
+        "Curiosity ('You need to see this result')",
+        "Urgency/FOMO ('Before it sells out again')"
+    ];
+    const randomAngle = angles[Math.floor(Math.random() * angles.length)];
+
     return `
 Product Name: ${productTitle}
 
-Generate a high-converting 3-PART UGC script (24s total) for a TikTok Shop ad.
-Focus on creative, viral copy with price comparisons (Anchor Pricing).
+Generate a 2-PART UGC script (16s total).
+Focus on a "Viral TikTok" vibe. Authentic, handheld, organic.
+CREATIVE ANGLE FOR THIS SCRIPT: ${randomAngle}
 
-Structure:
-Part 1 (Hook): Stop the scroll.
-Part 2 (Value/Comparison): The "Logic". Physical Store vs TikTok Shop comparison.
-Part 3 (Call to Action): Close the deal.
+Part 1 (0-8s): Hook/Problem/Shock based on the angle above.
+Part 2 (8-16s): Solution/Benefit/CTA.
 
-Ensure the output exactly matches the requested format with "PARTE X - [TITLE]:" and "FALA EM PT-BR:".
-DO NOT output "CENA:" lines. The visual is a static mirror selfie (Clean/Minimalist/Fashion style).
-The "FALA" in each part must be a single, continuous sentence/paragraph without line breaks.
+VISUAL RULES:
+- NEVER mention "cart icon", "button", or "link".
+- To indicate CTA, use: "Presenter points to bottom left corner".
+- Ensure the scene is 100% clean, no graphics.
 
-TONE REMINDER: "Olha isso... simplesmente perfeito." - Elegant, calm, confident.
+Ensure output follows the PARTE 1 / PARTE 2 structure with FALA EM PT-BR.
 `;
 };
 
@@ -250,6 +251,12 @@ export const generateScript = async (
     productTitle: string
 ): Promise<string> => {
     try {
+        const apiKey = process.env.API_KEY;
+        if (!apiKey) {
+            throw new Error("API Key is missing. Please ensure the API_KEY environment variable is set.");
+        }
+        const ai = new GoogleGenAI({ apiKey });
+
         let systemInstruction;
         let prompt;
 
@@ -309,7 +316,7 @@ export const parseVeo3Script = (promptText: string): ParsedScript | null => {
     
     // Check if this is a Modas Feminina prompt (it has specific headers that Veo3 doesn't)
     if (promptText.includes("DESCRIPTION:") && promptText.includes("AI SAFETY NOTE:")) {
-        return null; // Don't parse as Veo3 3-part script
+        return null; // Don't parse as Veo3 2-part script
     }
 
     const parts: ScriptPart[] = [];
@@ -325,8 +332,7 @@ export const parseVeo3Script = (promptText: string): ParsedScript | null => {
 
     const partConfigs = [
         { title: 'GANCHO', timing: '0-8s', partNum: 1 },
-        { title: 'VALOR', timing: '8-16s', partNum: 2 },
-        { title: 'CTA', timing: '16-24s', partNum: 3 },
+        { title: 'CTA', timing: '8-16s', partNum: 2 },
     ];
 
     for (const config of partConfigs) {
@@ -340,7 +346,7 @@ export const parseVeo3Script = (promptText: string): ParsedScript | null => {
         
         if (partMatch && partMatch[2]) {
             const rawContent = partMatch[2].trim();
-            // Scene match is now optional or will be empty since we requested NO SCENES
+            // Scene match
             const sceneMatch = rawContent.match(/CENA:\s*([\s\S]*?)(?=FALA EM PT-BR:|$)/i);
             const scene = sceneMatch ? sceneMatch[1].trim() : '';
             
